@@ -1,0 +1,12 @@
+{
+  "name": "gtm-jd-pipeline",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail"
+  },
+  "devDependencies": {
+    "wrangler": "4.120.1"
+  }
+}
