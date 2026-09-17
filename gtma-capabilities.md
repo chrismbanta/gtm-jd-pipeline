@@ -23,6 +23,7 @@ file is the fix for the mistake of guessing this list from memory instead of ask
 - CRM data cleaning (dedup, standardization, field mapping)
 - Revenue systems
 - Building AI agents
+- Automation tooling (n8n, or similar automation platforms) for workflow automation
 
 ## Still needed
 
