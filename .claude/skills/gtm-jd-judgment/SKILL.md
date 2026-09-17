@@ -35,7 +35,7 @@ to live in.
 | `company_domain` | from the source row |
 | `job_title` | the posting's title, as found |
 | `job_description` | the full JD text (HTML tags stripped) |
-| `gtma_capability_set` | what GTMA can actually build fast, across every tool GTMA works in. **Read this from `gtma-capabilities.md` in the GTMA working folder at run time — do not use a remembered or copied version.** That file is the maintained source of truth precisely because a list written into this skill would go stale the moment GTMA picks up a new tool; this file must never re-describe GTMA's capabilities itself, only say where to find them. |
+| `gtma_capability_set` | what GTMA can actually build fast, across every tool GTMA works in. **Read this from `gtma-capabilities.md` at the root of this repository at run time — do not use a remembered or copied version.** That file is the maintained source of truth precisely because a list written into this skill would go stale the moment GTMA picks up a new tool; this file must never re-describe GTMA's capabilities itself, only say where to find them. |
 
 ## The decision process
 

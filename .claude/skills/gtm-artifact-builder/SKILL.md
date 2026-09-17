@@ -60,7 +60,7 @@ output, not just a description of what it would do.
 
 ## Access
 
-**Read `gtma-capabilities.md` in the GTMA working folder to know what's actually wired up before
+**Read `gtma-capabilities.md` at the root of this repository to know what's actually wired up before
 assuming anything.** Do not assume Clay + Prospeo is the whole picture — `gtm-jd-judgment` no longer
 restricts `build_target` to Clay-shaped work, so a build routinely needs something else: CRM access for
 a data-cleaning sample, whatever platform a revenue-systems ask lives in, an agent framework for an
