@@ -2,3 +2,9 @@ node_modules/
 .wrangler/
 .dev.vars
 .DS_Store
+test-session.yaml
+clay-vault-credential.yaml
+fullenrich-vault-credential.yaml
+google-drive-vault-credential.yaml
+test-jd-payload.json
+session-events.json

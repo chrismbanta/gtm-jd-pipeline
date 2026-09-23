@@ -2,3 +2,13 @@ name = "gtm-jd-pipeline"
 main = "src/index.js"
 compatibility_date = "2026-08-01"
 
+[vars]
+AGENT_ID = "agent_01U9HqWKGJ7b1DNhKhLgH17W"
+ENVIRONMENT_ID = "env_016mK9aNVwhaMqKS7MSA7KJh"
+VAULT_ID = "vlt_011Cf9q2aMijZHiXuHSqDFKB"
+GITHUB_REPO_URL = "https://github.com/chrismbanta/gtm-jd-pipeline"
+
+[[kv_namespaces]]
+binding = "SESSION_MAP"
+id = "d389fe779afc4d41b7007cf9cacff6fd"
+
