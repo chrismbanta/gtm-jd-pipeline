@@ -6,5 +6,8 @@ test-session.yaml
 clay-vault-credential.yaml
 fullenrich-vault-credential.yaml
 google-drive-vault-credential.yaml
+google-drive-vault-credential-update.yaml
 test-jd-payload.json
 session-events.json
+session-events-2.json
+agent-update.yaml

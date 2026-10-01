@@ -21,6 +21,12 @@ regardless of which API key the agent is given. No Clay key will ever unlock thi
 
 ## Demonstrated this session (proven, not guessed)
 
+- Google Drive (Docs) write access for the hosted agent — wired via the `google_drive` MCP server
+  (`https://drivemcp.googleapis.com/mcp/v1`, declared in `agent.yaml`) with a vault OAuth credential
+  (`vcrd_01M3ZnEZAetcZqvwMgwSduau`) scoped to `drive.file` + `drive.readonly`, validated via
+  `ant beta:vaults:credentials mcp-oauth-validate` (status: valid). This is the mechanism
+  `gtm-artifact-builder` should use to write the final artifact Doc — do not treat it as missing or
+  unavailable.
 - Clay AI-judgment columns (GENERAL TASK / MORE SPECIFIC INSTRUCTIONS / OUTPUT FORMAT / INPUTS
   structure, judgment-only AI use) — demonstrated interactively; not yet confirmed reachable via the
   Public API key alone (the Public API has no workflow/table-editing endpoints either — check before

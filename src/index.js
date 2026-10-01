@@ -145,7 +145,7 @@ async function handleAnthropicWebhook(request, env, ctx) {
 
 async function fetchFinalAgentResult(sessionId, env) {
   const eventsResponse = await fetch(
-    `https://api.anthropic.com/v1/sessions/${sessionId}/events?beta=true&types[]=agent.message`,
+    `https://api.anthropic.com/v1/sessions/${sessionId}/events?beta=true&types[]=agent.message&types[]=session.status_idle&types[]=session.status_terminated&types[]=session.error`,
     {
       headers: {
         "x-api-key": env.ANTHROPIC_API_KEY,
@@ -158,15 +158,37 @@ async function fetchFinalAgentResult(sessionId, env) {
   if (!eventsResponse.ok) {
     const errorBody = await eventsResponse.text();
     console.log("Failed to fetch session events:", eventsResponse.status, errorBody);
-    return { error: "Could not fetch session events", detail: errorBody };
+    return { build_status: "error", summary: `Could not fetch session events: ${errorBody}` };
   }
 
   const events = await eventsResponse.json();
+
+  // A session can go idle for reasons other than a clean finish (e.g. it
+  // exhausted retries after a billing or rate-limit error mid-task). A
+  // mid-thought fragment left behind by that looks identical to a real
+  // answer unless we check the actual stop_reason first.
+  const statusEvents = events.data.filter(
+    (e) => e.type === "session.status_idle" || e.type === "session.status_terminated",
+  );
+  const lastStatusEvent = statusEvents[statusEvents.length - 1];
+  const stopReasonType = lastStatusEvent?.stop_reason?.type;
+
+  if (stopReasonType && stopReasonType !== "end_turn") {
+    const errorEvent = events.data.filter((e) => e.type === "session.error").pop();
+    const errorDetail = errorEvent ? ` ${errorEvent.error?.message || JSON.stringify(errorEvent.error)}` : "";
+    console.log("Session did not finish cleanly:", stopReasonType, errorDetail);
+    return {
+      build_status: "error",
+      artifact_doc_url: null,
+      summary: `Session did not finish cleanly (stop_reason: ${stopReasonType}).${errorDetail}`,
+    };
+  }
+
   const agentMessages = events.data.filter((e) => e.type === "agent.message");
   const lastMessage = agentMessages[agentMessages.length - 1];
 
   if (!lastMessage) {
-    return { error: "Session terminated with no agent message" };
+    return { build_status: "error", summary: "Session finished with no agent message" };
   }
 
   const text = lastMessage.content
@@ -181,7 +203,7 @@ async function fetchFinalAgentResult(sessionId, env) {
     return JSON.parse(jsonMatch ? jsonMatch[0] : text);
   } catch (err) {
     console.log("Could not parse agent's final message as JSON:", text);
-    return { raw_result: text, parse_error: true };
+    return { build_status: "error", raw_result: text, parse_error: true };
   }
 }
 
