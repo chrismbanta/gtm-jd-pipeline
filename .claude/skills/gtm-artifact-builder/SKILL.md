@@ -1,6 +1,6 @@
 ---
 name: gtm-artifact-builder
-description: Takes a build decision from gtm-jd-judgment and actually constructs the small proof-of-work sample, then writes it to a Google Doc and returns a short summary plus the doc link. Second half of a two-skill chain — never runs on its own, only after gtm-jd-judgment returns buildable:true. Use when a judged, scoped build_target needs to become a real artifact. Triggers on "build this", "make the sample for [company]", "execute the build_target".
+description: Takes a build decision from gtm-jd-judgment and actually constructs the small proof-of-work sample, then writes it to a Notion page and returns a short summary plus the page link. Second half of a two-skill chain — never runs on its own, only after gtm-jd-judgment returns buildable:true. Use when a judged, scoped build_target needs to become a real artifact. Triggers on "build this", "make the sample for [company]", "execute the build_target".
 ---
 
 # GTM Artifact Builder
@@ -75,10 +75,21 @@ stays real instead of drifting the same way the old hardcoded version did.
 ## Writing the artifact
 
 Write the full artifact (the built workflow's output, the table spec, whatever was produced) to a
-Google Doc — GTMA's agreed storage for this, chosen over Cloudflare R2/D1 specifically because it needs
-no new infrastructure and stays human-readable. Title the doc something identifiable
-(`<company_name> — GTM proof of work — <date>`), and write the summary as the doc's first line so it's
+Notion page — GTMA's agreed storage for this, chosen over Cloudflare R2/D1 specifically because it needs
+no new infrastructure and stays human-readable. Title the page something identifiable
+(`<company_name> — GTM proof of work — <date>`), and write the summary as the page's first line so it's
 legible without opening anything else.
+
+Create it via a direct call to Notion's REST API (`https://api.notion.com/v1/pages`) using `curl` from
+bash — there is no MCP tool for this, the vault only injects the `NOTION_API_KEY` bearer token when the
+request goes to `api.notion.com`, nothing more. Set the new page's parent to page id
+`3f974b75-d5f0-807b-9113-dc5c73797cf2` (the "GTMA Artifacts" page). Notion's Pages API is block-based,
+not markdown — look up the current request shape (required `Notion-Version` header, the `children` block
+array format) via `web_fetch` against Notion's own API reference before constructing the call rather than
+guessing the schema; it changes between API versions. Split long content into multiple paragraph/heading
+blocks rather than one giant block — Notion caps each rich-text block's length.
+
+The API response includes the new page's `url` — that's what goes in `artifact_doc_url` below.
 
 ## Output contract
 
@@ -87,7 +98,7 @@ Return JSON only:
 ```json
 {
   "build_status": "built",
-  "artifact_doc_url": "https://docs.google.com/...",
+  "artifact_doc_url": "https://www.notion.so/...",
   "summary": "One or two sentences, written the way it would read in a cold email — 'we noticed you're
     hiring for X, so we already built Y' — not a technical changelog.",
   "build_type": "workflow"

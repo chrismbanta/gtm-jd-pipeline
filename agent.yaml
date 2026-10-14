@@ -6,14 +6,5 @@ system: |
   to decide what to build. If it says buildable, then run gtm-artifact-builder
   to actually build it. Return the final JSON result from whichever skill
   finished last.
-mcp_servers:
-  - type: url
-    name: google_drive
-    url: https://drivemcp.googleapis.com/mcp/v1
 tools:
   - type: agent_toolset_20260401
-  - type: mcp_toolset
-    mcp_server_name: google_drive
-    default_config:
-      permission_policy:
-        type: always_allow
