@@ -22,6 +22,15 @@ already settled. It's narrower and harder to get right: **what, if anything, is 
 enough to GTMA's actual capabilities to build as a sample in minutes, not days**, and "nothing" is a
 completely valid, expected answer for a real fraction of postings, not a failure.
 
+## Where this fits
+
+This repository is one stage in a larger Clay-run pipeline, not the whole system. Upstream, Clay sources
+real GTM-engineer job postings from LinkedIn and enriches each one (company domain, LinkedIn URLs) before
+calling this pipeline per posting. Downstream, once this pipeline's result lands back in the row, Clay
+finds the hiring decision-maker at that company, enriches their contact details, and pushes the finished
+lead into its outbound sequencer, now carrying a real sample instead of a cold introduction. Both of
+those stages run in Clay itself and live outside this codebase.
+
 ## Scope
 
 **In scope**
