@@ -1,0 +1,6 @@
+{
+  "company_name": "ExampleCo",
+  "company_domain": "exampleco.io",
+  "job_title": "Senior GTM Engineer",
+  "job_description": "ExampleCo is hiring a Senior GTM Engineer to own our outbound revenue infrastructure.\n\nWhat you'll do:\n- Architect end-to-end outbound systems: ICP definition, enrichment, sequencing, CRM sync, reporting\n- Build and optimize Clay workflows, including enrichment waterfalls and AI columns\n- Design signal-based outbound systems using job changes, funding, and hiring activity\n- Build automation workflows with n8n, Make, Zapier, APIs, and webhooks\n\nWho you are:\n- 3+ years in GTM Engineering, RevOps, or a closely related role\n- Advanced experience with Clay, including enrichment workflows and waterfalls\n- Strong understanding of email deliverability and sending infrastructure"
+}

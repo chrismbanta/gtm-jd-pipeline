@@ -19,10 +19,15 @@ export default {
 };
 
 // Clay calls this (its HTTP API action) with one job posting's data. We kick off
-// a real Managed Agents session and return immediately — the agent can take
+// a real Managed Agents session and return immediately. The agent can take
 // minutes to run both skills, so the actual result comes back later via
 // /anthropic-webhook, not in this response.
 async function handleClayIntake(request, env, ctx) {
+  const providedSecret = request.headers.get("x-intake-secret");
+  if (!env.INTAKE_SECRET || providedSecret !== env.INTAKE_SECRET) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
   const body = await request.json();
   console.log("Received from Clay:", body);
 
@@ -70,7 +75,7 @@ async function handleClayIntake(request, env, ctx) {
   const session = await sessionResponse.json();
   console.log("Created session:", session.id);
 
-  // Store what Clay needs back so /anthropic-webhook can re-attach it later —
+  // Store what Clay needs back so /anthropic-webhook can re-attach it later:
   // the webhook event itself carries only the session id, nothing else.
   await env.SESSION_MAP.put(
     session.id,
@@ -89,7 +94,7 @@ async function handleClayIntake(request, env, ctx) {
 }
 
 // Anthropic calls this when a session's status changes. We only care about
-// session.status_terminated — that's when the agent has finished running
+// session.status_terminated: that's when the agent has finished running
 // both skills and we can go fetch its final answer.
 async function handleAnthropicWebhook(request, env, ctx) {
   const rawBody = await request.text();
@@ -103,7 +108,7 @@ async function handleAnthropicWebhook(request, env, ctx) {
   const event = JSON.parse(rawBody);
   console.log("Webhook event:", event.data?.type, event.data?.id);
 
-  // A session goes "idle" once the agent finishes answering — it does NOT
+  // A session goes "idle" once the agent finishes answering. It does NOT
   // auto-terminate. "terminated" only fires on an unrecoverable error or
   // explicit archival. For our single-turn use case, idle is the normal
   // "done" signal; terminated is the error/cleanup fallback. We subscribe to
@@ -198,7 +203,7 @@ async function fetchFinalAgentResult(sessionId, env) {
 
   try {
     // The agent's system prompt (agent.yaml) instructs it to return the final
-    // JSON result from whichever skill ran last — parse that out directly.
+    // JSON result from whichever skill ran last: parse that out directly.
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     return JSON.parse(jsonMatch ? jsonMatch[0] : text);
   } catch (err) {
@@ -257,7 +262,7 @@ function bytesToBase64(bytes) {
 }
 
 function buildAgentPrompt(body) {
-  return `Here is a job posting to process. Read gtma-capabilities.md at the
+  return `Here is a job posting to process. Read capabilities.md at the
 root of the mounted repo, then run the gtm-jd-judgment skill on
 this data, and if it says buildable, run gtm-artifact-builder next.
 Return the final JSON result.
