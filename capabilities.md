@@ -21,9 +21,9 @@ is UI/browser-OAuth-only regardless of which API key the agent holds.
 - **Clay AI-judgment columns** (general task / specific instructions / output format / inputs
   structure, judgment-only AI use). Demonstrated interactively; not yet confirmed reachable via the
   Public API alone, since the Public API has no workflow or table-editing endpoints either.
-- **Clay enrichment and prospecting pipelines** — department- and title-filtered people search via a
-  dedicated enrichment API (not just the native Clay action).
-- **Signal-to-copy pipelines** — a hiring, funding, or tech signal turned into one cold-email clause.
+- **Clay enrichment and prospecting pipelines**: department- and title-filtered people search via the
+  FullEnrich API directly (not just the native Clay action).
+- **Signal-to-copy pipelines**: a hiring, funding, or tech signal turned into one cold-email clause.
 
 ## Not agent-buildable (and why)
 

@@ -201,7 +201,7 @@ put its id in `wrangler.toml` as `VAULT_ID`, then add:
 | Credential | Type | Scoped to |
 |---|---|---|
 | Clay API key | API key | Clay's public API domain |
-| Enrichment API key | API key | your enrichment provider's API domain |
+| FullEnrich API key | API key | `app.fullenrich.com` |
 | Notion integration token | API key | `api.notion.com` |
 
 Each one is a plain, non-expiring API key stored as an `environment_variable`-type vault credential,
