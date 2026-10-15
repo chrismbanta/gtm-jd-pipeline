@@ -58,5 +58,5 @@ regardless of which API key the agent is given. No Clay key will ever unlock thi
 
 ## Still needed
 
-The real, complete list. Add what's missing, remove anything wrong, and correct the lists above if any
+The real, add what's missing, remove anything wrong, and correct the lists above if any
 of them is mischaracterized.
