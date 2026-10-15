@@ -60,17 +60,17 @@ output, not just a description of what it would do.
 
 ## Access
 
-**Read `gtma-capabilities.md` at the root of this repository to know what's actually wired up before
-assuming anything.** Do not assume Clay + Prospeo is the whole picture — `gtm-jd-judgment` no longer
-restricts `build_target` to Clay-shaped work, so a build routinely needs something else: CRM access for
-a data-cleaning sample, whatever platform a revenue-systems ask lives in, an agent framework for an
-agent-building ask. Needing a credential beyond Clay/Prospeo is now the expected case, not the rare
-exception.
+**Read `capabilities.md` at the root of this repository to know what's actually wired up before
+assuming anything.** Do not assume Clay + an enrichment API is the whole picture — `gtm-jd-judgment` no
+longer restricts `build_target` to Clay-shaped work, so a build routinely needs something else: CRM
+access for a data-cleaning sample, whatever platform a revenue-systems ask lives in, an agent framework
+for an agent-building ask. Needing a credential beyond Clay/enrichment is now the expected case, not the
+rare exception.
 
-If `build_target` needs something not listed as available in `gtma-capabilities.md`, stop and name
-exactly what's missing in the output rather than routing around it or faking a result. Once a new
-credential actually gets wired up, that's the moment to add it to `gtma-capabilities.md`, so the list
-stays real instead of drifting the same way the old hardcoded version did.
+If `build_target` needs something not listed as available in `capabilities.md`, stop and name exactly
+what's missing in the output rather than routing around it or faking a result. Once a new credential
+actually gets wired up, that's the moment to add it to `capabilities.md`, so the list stays real instead
+of drifting out of sync.
 
 ## Writing the artifact
 
@@ -81,13 +81,13 @@ no new infrastructure and stays human-readable. Title the page something identif
 legible without opening anything else.
 
 Create it via a direct call to Notion's REST API (`https://api.notion.com/v1/pages`) using `curl` from
-bash — there is no MCP tool for this, the vault only injects the `NOTION_API_KEY` bearer token when the
-request goes to `api.notion.com`, nothing more. Set the new page's parent to page id
-`3f974b75-d5f0-807b-9113-dc5c73797cf2` (the "GTMA Artifacts" page). Notion's Pages API is block-based,
-not markdown — look up the current request shape (required `Notion-Version` header, the `children` block
-array format) via `web_fetch` against Notion's own API reference before constructing the call rather than
-guessing the schema; it changes between API versions. Split long content into multiple paragraph/heading
-blocks rather than one giant block — Notion caps each rich-text block's length.
+bash — there is no MCP tool for this, the vault only injects the bearer token when the request goes to
+`api.notion.com`, nothing more. Set the new page's parent to the artifacts parent page configured for
+this workspace (see `README.md` → Setup). Notion's Pages API is block-based, not markdown — look up the
+current request shape (required `Notion-Version` header, the `children` block array format) via
+`web_fetch` against Notion's own API reference before constructing the call rather than guessing the
+schema; it changes between API versions. Split long content into multiple paragraph/heading blocks
+rather than one giant block — Notion caps each rich-text block's length.
 
 The API response includes the new page's `url` — that's what goes in `artifact_doc_url` below.
 
@@ -113,7 +113,7 @@ spec that still needs UI work; `"blocked"` if genuinely missing access, with the
 
 This output is what gets relayed back through Cloudflare to Clay — `summary` and `artifact_doc_url`
 land in the row as short fields, never the full artifact content. From there the pipeline moves to
-finding the hiring manager (Prospeo) and, eventually, sending from Clay's Sequencer.
+finding the hiring manager (the enrichment step) and, eventually, sending from Clay's Sequencer.
 
 ## Related skills
 

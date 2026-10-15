@@ -1,0 +1,9 @@
+{
+  "company_name": "ExampleCo",
+  "company_domain": "exampleco.io",
+  "job_title": "Senior GTM Engineer",
+  "build_status": "built",
+  "artifact_doc_url": "https://www.notion.so/ExampleCo-GTM-proof-of-work-fictional",
+  "summary": "You're hiring a Senior GTM Engineer to build signal-based outbound, so we built a working slice of it: 5 real companies matched on a hiring signal, with one cold-email opening clause written per account.",
+  "build_type": "workflow"
+}

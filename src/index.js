@@ -23,6 +23,11 @@ export default {
 // minutes to run both skills, so the actual result comes back later via
 // /anthropic-webhook, not in this response.
 async function handleClayIntake(request, env, ctx) {
+  const providedSecret = request.headers.get("x-intake-secret");
+  if (!env.INTAKE_SECRET || providedSecret !== env.INTAKE_SECRET) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
   const body = await request.json();
   console.log("Received from Clay:", body);
 
@@ -257,7 +262,7 @@ function bytesToBase64(bytes) {
 }
 
 function buildAgentPrompt(body) {
-  return `Here is a job posting to process. Read gtma-capabilities.md at the
+  return `Here is a job posting to process. Read capabilities.md at the
 root of the mounted repo, then run the gtm-jd-judgment skill on
 this data, and if it says buildable, run gtm-artifact-builder next.
 Return the final JSON result.

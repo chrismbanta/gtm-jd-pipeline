@@ -2,13 +2,14 @@ name = "gtm-jd-pipeline"
 main = "src/index.js"
 compatibility_date = "2026-08-01"
 
+# Fill these in with your own values, see README.md -> Setup.
 [vars]
-AGENT_ID = "agent_01U9HqWKGJ7b1DNhKhLgH17W"
-ENVIRONMENT_ID = "env_016mK9aNVwhaMqKS7MSA7KJh"
-VAULT_ID = "vlt_011Cf9q2aMijZHiXuHSqDFKB"
+AGENT_ID = "YOUR_AGENT_ID"
+ENVIRONMENT_ID = "YOUR_ENVIRONMENT_ID"
+VAULT_ID = "YOUR_VAULT_ID"
 GITHUB_REPO_URL = "https://github.com/chrismbanta/gtm-jd-pipeline"
 
+# Create your own with: npx wrangler kv namespace create SESSION_MAP
 [[kv_namespaces]]
 binding = "SESSION_MAP"
-id = "d389fe779afc4d41b7007cf9cacff6fd"
-
+id = "YOUR_KV_NAMESPACE_ID"
