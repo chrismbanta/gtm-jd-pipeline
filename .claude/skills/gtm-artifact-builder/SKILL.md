@@ -82,8 +82,9 @@ legible without opening anything else.
 
 Create it via a direct call to Notion's REST API (`https://api.notion.com/v1/pages`) using `curl` from
 bash — there is no MCP tool for this, the vault only injects the bearer token when the request goes to
-`api.notion.com`, nothing more. Set the new page's parent to the artifacts parent page configured for
-this workspace (see `README.md` → Setup). Notion's Pages API is block-based, not markdown — look up the
+`api.notion.com`, nothing more. Set the new page's parent to `<YOUR_NOTION_PARENT_PAGE_ID>` — replace
+this placeholder with your own parent page id once you've set up Notion access (see `README.md` →
+Setup). Notion's Pages API is block-based, not markdown — look up the
 current request shape (required `Notion-Version` header, the `children` block array format) via
 `web_fetch` against Notion's own API reference before constructing the call rather than guessing the
 schema; it changes between API versions. Split long content into multiple paragraph/heading blocks

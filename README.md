@@ -198,6 +198,10 @@ put its id in `wrangler.toml` as `VAULT_ID`, then add:
 Each one is a plain, non-expiring API key stored as an `environment_variable`-type vault credential,
 injected only when a request goes to its allowed host, never exposed to the agent directly.
 
+Create a Notion page to hold every artifact this pipeline writes, share it with your Notion
+integration, then replace `<YOUR_NOTION_PARENT_PAGE_ID>` in `gtm-artifact-builder/SKILL.md` with that
+page's id.
+
 ### Deploy
 
 ```bash
