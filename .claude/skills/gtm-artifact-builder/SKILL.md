@@ -1,6 +1,6 @@
 ---
 name: gtm-artifact-builder
-description: Takes a build decision from gtm-jd-judgment and actually constructs the small proof-of-work sample, then writes it to a Notion page and returns a short summary plus the page link. Second half of a two-skill chain — never runs on its own, only after gtm-jd-judgment returns buildable:true. Use when a judged, scoped build_target needs to become a real artifact. Triggers on "build this", "make the sample for [company]", "execute the build_target".
+description: Takes a build decision from gtm-jd-judgment and actually constructs the small proof-of-work sample, then writes it to a Notion page and returns a short summary plus the page link. Second step of a three-skill chain — never runs on its own, only after gtm-jd-judgment returns buildable:true. Use when a judged, scoped build_target needs to become a real artifact. Triggers on "build this", "make the sample for [company]", "execute the build_target".
 ---
 
 # GTM Artifact Builder
@@ -108,11 +108,14 @@ spec that still needs UI work; `"blocked"` if genuinely missing access, with the
 ## What to do next
 
 This output is what gets relayed back through Cloudflare to Clay — `summary` and `artifact_doc_url`
-land in the row as short fields, never the full artifact content. From there the pipeline moves to
-finding the hiring manager (FullEnrich) and, eventually, sending from Clay's Sequencer.
+land in the row as short fields, never the full artifact content. When `build_status` is `"built"` or
+`"spec_only_needs_manual_step"`, run `gtm-decision-maker-finder` next: it finds who at the hiring company
+should receive the artifact (FullEnrich) and adds them to this JSON. The combined result then goes to
+Clay, ready for the Sequencer.
 
 ## Related skills
 
 - `gtm-jd-judgment` — always runs first, this skill's only valid input source
+- `gtm-decision-maker-finder` — runs after this one, adds the recipient to this skill's output
 - `playbooks/playbook-job-posting-language` (pulled Eric skill) — the closest existing reference for
   what a signal-to-copy workflow build actually looks like end to end, node by node

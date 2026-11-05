@@ -12,17 +12,22 @@ Clay (webhook)  ──POST──>  Cloudflare Worker (src/index.js)  ──creat
                                                                           runs gtm-jd-judgment,
                                                                           then gtm-artifact-builder
                                                                                      │
-                                                                          writes artifact to Notion
+                                                                          writes artifact to Notion,
+                                                                          then gtm-decision-maker-finder
+                                                                          finds the recipient (FullEnrich)
                                                                                      │
-Clay  <──POST (summary + Notion link)──  Worker  <──webhook (session idle)──────────┘
+Clay  <──POST (summary + Notion link + contacts)──  Worker  <──webhook (session idle)┘
 ```
 
 - `src/index.js` handles two routes: the root path takes Clay's intake POST and creates the session;
   `/anthropic-webhook` receives Anthropic's completion callback and relays the final result to Clay.
 - `agent.yaml` defines the agent (model, system prompt, tools). It no longer declares any MCP server —
   the agent only needs `agent_toolset_20260401` (bash, read, write, web_search, web_fetch).
-- `.claude/skills/gtm-jd-judgment` and `.claude/skills/gtm-artifact-builder` are the two-skill chain the
-  agent runs, in that order, each time.
+- `.claude/skills/gtm-jd-judgment`, `.claude/skills/gtm-artifact-builder` and
+  `.claude/skills/gtm-decision-maker-finder` are the three-skill chain the agent runs, in that order.
+  The finder picks the recipient by company type: founders for agencies and small SaaS (≤ 50 people),
+  the leader who owns the role for larger SaaS, and adds them as `decision_makers` plus flat
+  `primary_contact_*` fields for Clay.
 - `gtma-capabilities.md` (repo root) is the single source of truth the skills read for what's actually
   wired up and usable by the hosted agent — keep it current, don't let the skills guess.
 

@@ -20,7 +20,7 @@ export default {
 
 // Clay calls this (its HTTP API action) with one job posting's data. We kick off
 // a real Managed Agents session and return immediately — the agent can take
-// minutes to run both skills, so the actual result comes back later via
+// minutes to run all three skills, so the actual result comes back later via
 // /anthropic-webhook, not in this response.
 async function handleClayIntake(request, env, ctx) {
   const body = await request.json();
@@ -90,7 +90,7 @@ async function handleClayIntake(request, env, ctx) {
 
 // Anthropic calls this when a session's status changes. We only care about
 // session.status_terminated — that's when the agent has finished running
-// both skills and we can go fetch its final answer.
+// all three skills and we can go fetch its final answer.
 async function handleAnthropicWebhook(request, env, ctx) {
   const rawBody = await request.text();
 
@@ -260,7 +260,8 @@ function buildAgentPrompt(body) {
   return `Here is a job posting to process. Read gtma-capabilities.md at the
 root of the mounted repo, then run the gtm-jd-judgment skill on
 this data, and if it says buildable, run gtm-artifact-builder next.
-Return the final JSON result.
+If the builder returns "built" or "spec_only_needs_manual_step", run
+gtm-decision-maker-finder last. End with only the final JSON result.
 
 company_name: ${body.company_name}
 company_domain: ${body.company_domain || ""}

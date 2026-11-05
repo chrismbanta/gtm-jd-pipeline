@@ -1,6 +1,6 @@
 ---
 name: gtm-jd-judgment
-description: Reads one GTM-engineer(-adjacent) job description and decides the single smallest, easiest thing GTMA could build as a free proof-of-work sample for that company. Every JD reaching this skill already passed Clay's GTM-title filter, so this skill never re-decides whether the company is worth pursuing — only what, if anything, to build. First half of a two-skill chain; hands its output to gtm-artifact-builder. Use when a Clay-sourced JD needs a build decision. Triggers on "judge this JD", "what should we build for [company]", "pick the easiest thing to build".
+description: Reads one GTM-engineer(-adjacent) job description and decides the single smallest, easiest thing GTMA could build as a free proof-of-work sample for that company. Every JD reaching this skill already passed Clay's GTM-title filter, so this skill never re-decides whether the company is worth pursuing — only what, if anything, to build. First step of a three-skill chain; hands its output to gtm-artifact-builder. Use when a Clay-sourced JD needs a build decision. Triggers on "judge this JD", "what should we build for [company]", "pick the easiest thing to build".
 ---
 
 # GTM JD Judgment

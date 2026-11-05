@@ -38,6 +38,11 @@ regardless of which API key the agent is given. No Clay key will ever unlock thi
   (raw API, not just the native Clay action). Corrected from an earlier version of this file that named
   Prospeo: the vault credential actually provisioned is FULLENRICH_API_KEY, not Prospeo. Confirm which
   provider is actually wired before assuming either name.
+- FullEnrich REST API for the hosted agent — vault `environment_variable` credential
+  (`vcrd_013esnkFLa8opuKp8c95A2vP`, secret name `FULLENRICH_API_KEY`) scoped to `app.fullenrich.com`.
+  Confirmed working 2026-11-05 with v2 `company/lookup`, `people/search` (0.25 credit per person
+  returned) and `contact/enrich/bulk` (1 credit per work email found). `gtm-decision-maker-finder` uses
+  it to find the recipient at the hiring company.
 - Signal-to-copy pipelines — a hiring/funding/tech signal turned into one cold-email clause
 
 ## NOT agent-buildable (confirmed, not just unwired)
