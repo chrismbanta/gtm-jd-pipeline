@@ -38,33 +38,29 @@ gets built as a real working agent. A written deliverable (a
 RevOps process doc, a cleanup plan) is a complete, real artifact in its own right when that's what the
 ask calls for, not a fallback for when a "real" build isn't possible.
 
-**Within Clay specifically, prefer a Clay workflow over a Clay table, whenever the `build_target`
-allows it.** This is a real
-technical constraint, not a style preference: Clay's CLI can create and publish workflows
-(`clay workflows create`, `nodes create`, `publish`, `runs start`) but it cannot create a table or add
-a column to one — that's browser-only. A `build_target` shaped as a workflow (a signal check, an
-enrichment pass, a small pipeline with a few nodes) can be fully built and even run via CLI, end to end,
-unattended. A `build_target` shaped as a table cannot be built this way at all right now.
+**Within Clay specifically, this agent cannot build anything — not a workflow, not a table, not a
+column.** This is a real technical constraint, not a style preference, and `gtma-capabilities.md` is the
+source of truth for it: Clay's Public API is read/query/execute-only, with no endpoints for creating
+workflows, tables, or workflow steps. The `clay` CLI's `workflows create` / `nodes create` / `publish`
+commands need a browser-OAuth login with a human present, which this hosted agent never has. Do not
+attempt `clay workflows create` or any other Clay build command, and never claim a Clay build happened.
 
-If the `build_target` is genuinely table-shaped and a workflow can't stand in for it, don't pretend to
-build it. Produce a written table spec instead — same shape as the `clay-table.md` files in the pulled
-playbooks (columns, types, formulas, run conditions, credit gates) — and say plainly in the output that
-this needs a few minutes of manual column creation in the Clay UI before it's live. A spec that's honest
-about needing a manual step is worth more than a claimed build that silently doesn't exist.
-
-For a workflow build: use `clay workflows actions list` and `clay workflows actions schema` to find
-real actions for whatever the target needs (don't guess action names or input field names), build the
-graph, publish it, and — if the `build_target` calls for a demonstrable output, not just a live
-pipeline — run it once on a small real sample (5-10 rows is plenty) so the artifact includes actual
-output, not just a description of what it would do.
+If the `build_target` is genuinely Clay-shaped (a workflow or a table), don't pretend to build it.
+Produce a written spec instead — same shape as the `clay-table.md` files in the pulled playbooks
+(columns or nodes, types, formulas, run conditions, credit gates) — and say plainly in the output that
+it needs to be built by hand in the Clay UI before it's live. Where the target calls for demonstrable
+output, produce that output directly with the credentials that are wired (web research, FullEnrich) on
+a small real sample (5-10 rows is plenty), so the artifact shows real results, not just a description.
+A spec that's honest about needing a manual step is worth more than a claimed build that silently
+doesn't exist.
 
 ## Access
 
 **Read `gtma-capabilities.md` at the root of this repository to know what's actually wired up before
-assuming anything.** Do not assume Clay + Prospeo is the whole picture — `gtm-jd-judgment` no longer
+assuming anything.** Do not assume Clay + FullEnrich is the whole picture — `gtm-jd-judgment` no longer
 restricts `build_target` to Clay-shaped work, so a build routinely needs something else: CRM access for
 a data-cleaning sample, whatever platform a revenue-systems ask lives in, an agent framework for an
-agent-building ask. Needing a credential beyond Clay/Prospeo is now the expected case, not the rare
+agent-building ask. Needing a credential beyond Clay/FullEnrich is now the expected case, not the rare
 exception.
 
 If `build_target` needs something not listed as available in `gtma-capabilities.md`, stop and name
@@ -113,7 +109,7 @@ spec that still needs UI work; `"blocked"` if genuinely missing access, with the
 
 This output is what gets relayed back through Cloudflare to Clay — `summary` and `artifact_doc_url`
 land in the row as short fields, never the full artifact content. From there the pipeline moves to
-finding the hiring manager (Prospeo) and, eventually, sending from Clay's Sequencer.
+finding the hiring manager (FullEnrich) and, eventually, sending from Clay's Sequencer.
 
 ## Related skills
 
